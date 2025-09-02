@@ -1,7 +1,7 @@
 import React from 'react';
 import { Settings } from 'lucide-react';
 
-const MachineInfoCard: React.FC = () => {
+const MachineInfoCard = () => {
   const machineData = {
     serial: '4D0EF07293',
     type: 'MÁQUINA PLANA ELECTRÓNICA',

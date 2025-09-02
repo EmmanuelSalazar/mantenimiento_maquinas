@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
 
-const InterventionForm: React.FC = () => {
+const InterventionForm = () => {
   const navigate = useNavigate();
   const { addIntervention } = useInterventions();
   
@@ -13,11 +13,11 @@ const InterventionForm: React.FC = () => {
     observations: ''
   });
   
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+    const newErrors = {};
     
     if (!formData.maintenanceType.trim()) {
       newErrors.maintenanceType = 'El tipo de mantenimiento es requerido';
@@ -35,7 +35,7 @@ const InterventionForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) return;
@@ -65,7 +65,7 @@ const InterventionForm: React.FC = () => {
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));

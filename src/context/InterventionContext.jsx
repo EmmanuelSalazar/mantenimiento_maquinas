@@ -1,25 +1,16 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Intervention, MachineData } from '../types/Intervention';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-interface InterventionContextType {
-  interventions: Intervention[];
-  addIntervention: (intervention: Omit<Intervention, 'id'>) => void;
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  filteredInterventions: Intervention[];
-}
+const InterventionContext = createContext(undefined);
 
-const InterventionContext = createContext<InterventionContextType | undefined>(undefined);
-
-const defaultMachineData: MachineData = {
+const defaultMachineData = {
   serial: '4D0EF07293',
   type: 'MÁQUINA PLANA ELECTRÓNICA',
   brand: 'JUKI',
   code: 'PLA-0001'
 };
 
-export const InterventionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [interventions, setInterventions] = useState<Intervention[]>([]);
+export const InterventionProvider = ({ children }) => {
+  const [interventions, setInterventions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -28,7 +19,7 @@ export const InterventionProvider: React.FC<{ children: ReactNode }> = ({ childr
       setInterventions(JSON.parse(stored));
     } else {
       // Datos de ejemplo
-      const sampleInterventions: Intervention[] = [
+      const sampleInterventions = [
         {
           id: '1',
           date: '2024-01-15',
@@ -51,8 +42,8 @@ export const InterventionProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
   }, []);
 
-  const addIntervention = (intervention: Omit<Intervention, 'id'>) => {
-    const newIntervention: Intervention = {
+  const addIntervention = (intervention) => {
+    const newIntervention = {
       ...intervention,
       id: Date.now().toString(),
       machineData: defaultMachineData

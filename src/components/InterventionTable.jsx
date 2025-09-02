@@ -1,13 +1,8 @@
 import React from 'react';
 import { Calendar, User, FileText, Wrench } from 'lucide-react';
-import { Intervention } from '../types/Intervention';
 
-interface InterventionTableProps {
-  interventions: Intervention[];
-}
-
-const InterventionTable: React.FC<InterventionTableProps> = ({ interventions }) => {
-  const formatDate = (dateString: string) => {
+const InterventionTable = ({ interventions }) => {
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
       day: '2-digit',
@@ -16,8 +11,8 @@ const InterventionTable: React.FC<InterventionTableProps> = ({ interventions }) 
     });
   };
 
-  const getMaintenanceTypeColor = (type: string) => {
-    const colors: Record<string, string> = {
+  const getMaintenanceTypeColor = (type) => {
+    const colors = {
       'Preventivo': 'bg-blue-100 text-blue-800',
       'Correctivo': 'bg-red-100 text-red-800',
       'Predictivo': 'bg-yellow-100 text-yellow-800',

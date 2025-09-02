@@ -5,7 +5,7 @@ import { useInterventions } from '../context/InterventionContext';
 import MachineInfoCard from '../components/MachineInfoCard';
 import InterventionTable from '../components/InterventionTable';
 
-const HistoryPage: React.FC = () => {
+const HistoryPage = () => {
   const { searchTerm, setSearchTerm, filteredInterventions } = useInterventions();
 
   return (
