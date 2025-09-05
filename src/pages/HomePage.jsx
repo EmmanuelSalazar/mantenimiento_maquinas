@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { History, PlusCircle, Wrench } from 'lucide-react';
+import { History, PlusCircle, Wrench, Settings } from 'lucide-react';
 
 const HomePage = () => {
   return (
@@ -21,7 +21,7 @@ const HomePage = () => {
           </div>
 
           {/* Navigation Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Ver Historial */}
             <Link
               to="/historial"
@@ -58,6 +58,25 @@ const HomePage = () => {
                 </p>
               </div>
               <div className="h-1 bg-gradient-to-r from-green-500 to-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+            </Link>
+
+            {/* Configuración */}
+            <Link
+              to="/configuracion"
+              className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+            >
+              <div className="p-8">
+                <div className="flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-6 group-hover:bg-purple-200 transition-colors duration-300">
+                  <Settings className="h-8 w-8 text-purple-600" />
+                </div>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                  Configuración
+                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  Administre mecánicos y máquinas del sistema. Configure usuarios y equipos disponibles.
+                </p>
+              </div>
+              <div className="h-1 bg-gradient-to-r from-purple-500 to-violet-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Link>
           </div>
 
