@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useInterventions } from './../context/InterventionContext';
+import FetchMaquinas from './../services/api/maquinas';
 import { Settings } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 const MachineInfoCard = () => {
-  const machineData = {
+  const navigate = useNavigate();
+  const { maquina } = useInterventions();
+  const [machineData, setMachineData] = useState({
+    serial: '',
+    type: '',
+    brand: '',
+    code: ''
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await FetchMaquinas(maquina);
+        setMachineData({
+          serial: data[0].serial,
+          type: data[0].maquina,
+          brand: data[0].marca,
+          code: data[0].codigo
+        });
+        navigate(`/historial/${data[0].codigo}`);
+      } catch (error) {
+        console.error('Ha ocurrido un error:', error);
+      }
+    };
+    fetchData();
+  }, [maquina]);
+
+  /* const machineData = {
     serial: '4D0EF07293',
     type: 'MÁQUINA PLANA ELECTRÓNICA',
     brand: 'JUKI',
     code: 'PLA-0001'
-  };
+  }; */
 
   return (
     <div className="bg-white rounded-lg shadow-sm border mb-6 overflow-hidden">
@@ -50,7 +78,7 @@ const MachineInfoCard = () => {
       </div>
 
       {/* Intervention Data Header */}
-      <div className="bg-blue-600 px-6 py-3">
+      <div className="bg-gray-700 px-6 py-3">
         <div className="flex items-center justify-center">
           <Settings className="h-5 w-5 text-white mr-2" />
           <h2 className="text-lg font-semibold text-white tracking-wide">

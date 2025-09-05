@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Camera, Search, ArrowLeft, Calendar } from 'lucide-react';
+import { Camera, Search, ArrowLeft, Calendar, X } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
 import MachineInfoCard from '../components/MachineInfoCard';
 import InterventionTable from '../components/InterventionTable';
+import QrScanner from '../components/utils/QrScanner';
+import { useParams } from 'react-router-dom';
 
 const HistoryPage = () => {
+  const { id } = useParams();
   const { searchTerm, setSearchTerm, filteredInterventions } = useInterventions();
+  const [showScanner, setShowScanner] = useState(false);
+  const [scannedCode, setScannedCode] = useState(null);
+  const { QrScannerComponent, show } = QrScanner();
+  const handleScan = (result) => {
+    setScannedCode(result);
+  };
+
+  useEffect(() => {
+    if(!show) {
+      setShowScanner(null);
+    }
+  }, [show])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -24,10 +39,25 @@ const HistoryPage = () => {
                 </Link>
                 <h1 className="text-2xl font-bold text-gray-900">Historial de Intervenciones</h1>
               </div>
-              <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                <Camera className="h-5 w-5 mr-2" />
-                Capturar
-              </button>
+              {showScanner ? (
+                <div className="relative">
+                  <button 
+                    onClick={() => setShowScanner(false)}
+                    className="absolute top-2 right-2 z-10 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                  <QrScannerComponent show={showScanner} />
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setShowScanner(true)}
+                  className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                >
+                  <Camera className="h-5 w-5 mr-2" />
+                  Capturar
+                </button>
+              )}
             </div>
 
             {/* Search Bar */}
@@ -72,7 +102,7 @@ const HistoryPage = () => {
         {/* Quick Actions */}
         <div className="text-center">
           <Link
-            to="/nueva-intervencion"
+            to={`/nueva-intervencion/${id}`}
             className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
           >
             <Calendar className="h-5 w-5 mr-2" />

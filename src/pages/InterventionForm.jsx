@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
 
 const InterventionForm = () => {
   const navigate = useNavigate();
   const { addIntervention } = useInterventions();
-  
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     maintenanceType: '',
     responsible: '',
@@ -98,7 +98,7 @@ const InterventionForm = () => {
           <div className="bg-white rounded-lg shadow-sm border">
             <form onSubmit={handleSubmit} className="p-6">
               <div className="space-y-6">
-                {/* Tipo de Mantenimiento */}
+                <h4>Maquina: <strong>{id}</strong></h4>
                 <div>
                   <label htmlFor="maintenanceType" className="block text-sm font-medium text-gray-700 mb-2">
                     Tipo de Mantenimiento <span className="text-red-500">*</span>
@@ -112,10 +112,10 @@ const InterventionForm = () => {
                     }`}
                   >
                     <option value="">Seleccione el tipo de mantenimiento</option>
-                    <option value="Preventivo">Preventivo</option>
-                    <option value="Correctivo">Correctivo</option>
-                    <option value="Predictivo">Predictivo</option>
-                    <option value="Emergencia">Emergencia</option>
+                    <option value="1">Preventivo</option>
+                    <option value="2">Correctivo</option>
+                    <option value="3">Predictivo</option>
+                    <option value="4">Emergencia</option>
                   </select>
                   {errors.maintenanceType && (
                     <div className="mt-2 flex items-center text-red-600 text-sm">

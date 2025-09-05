@@ -2,14 +2,16 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const InterventionContext = createContext(undefined);
 
-const defaultMachineData = {
-  serial: '4D0EF07293',
-  type: 'MÁQUINA PLANA ELECTRÓNICA',
-  brand: 'JUKI',
-  code: 'PLA-0001'
-};
+
 
 export const InterventionProvider = ({ children }) => {
+  const [maquina,setMaquina] = useState();
+  const [defaultMachineData, setDefaultMachineData] = useState({
+  serial: '',
+  type: '',
+  brand: '',
+  code: ''
+});
   const [interventions, setInterventions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -67,7 +69,11 @@ export const InterventionProvider = ({ children }) => {
       addIntervention,
       searchTerm,
       setSearchTerm,
-      filteredInterventions
+      filteredInterventions,
+      defaultMachineData,
+      setDefaultMachineData,
+      maquina,
+      setMaquina
     }}>
       {children}
     </InterventionContext.Provider>
