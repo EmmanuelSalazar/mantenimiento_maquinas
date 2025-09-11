@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Settings, Users, Wrench, Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { ArrowLeft, Settings, Users, Wrench, Plus, Edit, Trash2, Save, X, Filter } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
 
 const ConfigurationPage = () => {
   const { mechanics, machines, addMechanic, updateMechanic, deleteMechanic, addMachine, updateMachine, deleteMachine } = useInterventions();
   
   const [activeTab, setActiveTab] = useState('mechanics');
+  const [machineTypeFilter, setMachineTypeFilter] = useState('');
   const [showMechanicForm, setShowMechanicForm] = useState(false);
   const [showMachineForm, setShowMachineForm] = useState(false);
   const [editingMechanic, setEditingMechanic] = useState(null);
@@ -77,6 +78,14 @@ const ConfigurationPage = () => {
     setMechanicForm({ name: '', email: '', phone: '', specialty: '' });
     setMachineForm({ serial: '', maquina: '', marca: '', codigo: '', location: '' });
   };
+
+  // Obtener tipos únicos de máquinas para el filtro
+  const uniqueMachineTypes = [...new Set(machines.map(machine => machine.maquina))].sort();
+
+  // Filtrar máquinas por tipo
+  const filteredMachines = machineTypeFilter 
+    ? machines.filter(machine => machine.maquina === machineTypeFilter)
+    : machines;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -182,18 +191,51 @@ const ConfigurationPage = () => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Gestión de Máquinas</h2>
-                <button
-                  onClick={() => setShowMachineForm(true)}
-                  className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Añadir Máquina
-                </button>
+                <div className="flex items-center space-x-4">
+                  {/* Filtro por tipo de máquina */}
+                  <div className="flex items-center">
+                    <Filter className="h-5 w-5 text-gray-500 mr-2" />
+                    <select
+                      value={machineTypeFilter}
+                      onChange={(e) => setMachineTypeFilter(e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                    >
+                      <option value="">Todos los tipos</option>
+                      {uniqueMachineTypes.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    onClick={() => setShowMachineForm(true)}
+                    className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
+                  >
+                    <Plus className="h-5 w-5 mr-2" />
+                    Añadir Máquina
+                  </button>
+                </div>
               </div>
+
+              {/* Información del filtro */}
+              {machineTypeFilter && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-blue-800">
+                      Mostrando máquinas de tipo: <strong>{machineTypeFilter}</strong>
+                    </span>
+                    <button
+                      onClick={() => setMachineTypeFilter('')}
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      Limpiar filtro
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Machines List */}
               <div className="space-y-4 scrollList overflow-y-auto">
-                {machines.map((machine) => (
+                {filteredMachines.map((machine) => (
                   <div key={machine.id} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900">{machine.codigo} - {machine.maquina}</h3>
@@ -215,6 +257,11 @@ const ConfigurationPage = () => {
                     </div>
                   </div>
                 ))}
+                {filteredMachines.length === 0 && machines.length > 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    No se encontraron máquinas del tipo seleccionado
+                  </div>
+                )}
                 {machines.length === 0 && (
                   <div className="text-center py-8 text-gray-500">
                     No hay máquinas registradas
