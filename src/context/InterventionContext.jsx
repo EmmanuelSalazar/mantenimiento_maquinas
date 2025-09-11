@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import FetchEmpleados from '../services/api/empleados';
-import { FetchMaquinas, EliminarMaquina } from '../services/api/maquinas';
+import { FetchMaquinas, EliminarMaquina, AgregarMaquina } from '../services/api/maquinas';
 import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
 const InterventionContext = createContext(undefined);
 
@@ -80,14 +80,18 @@ export const InterventionProvider = ({ children }) => {
     localStorage.setItem('mechanics', JSON.stringify(updated));
   };
 
-  const addMachine = (machine) => {
-    const newMachine = {
-      ...machine,
-      id: Date.now().toString()
-    };
-    const updated = [...machines, newMachine];
-    setMachines(updated);
-    localStorage.setItem('machines', JSON.stringify(updated));
+  const addMachine = async (machine) => {
+    machine.maquina = machine.maquina.toUpperCase();
+    machine.marca = machine.marca.toUpperCase();
+    machine.codigo = machine.codigo.toUpperCase();
+    try {
+      await AgregarMaquina(machine);
+      alert('Maquina añadida correctamente');
+      const data = await FetchMaquinas();
+      setMachines(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const updateMachine = (id, updatedMachine) => {
@@ -102,7 +106,7 @@ export const InterventionProvider = ({ children }) => {
     try {
       await EliminarMaquina(id);
       alert('Maquina eliminada correctamente');
-      await FetchMaquinas();
+      const data = await FetchMaquinas();
       setMachines(data);
     } catch (error) {
       console.log(error);

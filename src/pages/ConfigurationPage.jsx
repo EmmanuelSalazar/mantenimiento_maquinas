@@ -191,7 +191,7 @@ const ConfigurationPage = () => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Gestión de Máquinas</h2>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4" style={{display: 'flex', flexWrap: 'wrap', gap: '1rem'}}>
                   {/* Filtro por tipo de máquina */}
                   <div className="flex items-center">
                     <Filter className="h-5 w-5 text-gray-500 mr-2" />
@@ -199,6 +199,7 @@ const ConfigurationPage = () => {
                       value={machineTypeFilter}
                       onChange={(e) => setMachineTypeFilter(e.target.value)}
                       className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                       style={{width: '160px'}}
                     >
                       <option value="">Todos los tipos</option>
                       {uniqueMachineTypes.map(type => (
@@ -206,13 +207,15 @@ const ConfigurationPage = () => {
                       ))}
                     </select>
                   </div>
-                  <button
+                  <div>
+                    <button
                     onClick={() => setShowMachineForm(true)}
                     className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
                   >
                     <Plus className="h-5 w-5 mr-2" />
                     Añadir Máquina
                   </button>
+                  </div>
                 </div>
               </div>
 
