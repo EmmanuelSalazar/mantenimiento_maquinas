@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
-
 const InterventionForm = () => {
   const navigate = useNavigate();
-  const { addIntervention } = useInterventions();
+  const { addIntervention, mechanics } = useInterventions();
   const { id } = useParams();
   const [formData, setFormData] = useState({
     maintenanceType: '',
     responsible: '',
     observations: ''
   });
-  
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,18 +44,13 @@ const InterventionForm = () => {
       addIntervention({
         ...formData,
         date: new Date().toISOString().split('T')[0],
-        machineData: {
-          serial: '4D0EF07293',
-          type: 'MÁQUINA PLANA ELECTRÓNICA',
-          brand: 'JUKI',
-          code: 'PLA-0001'
-        }
+        machineData: id,
+        responsible: formData.responsible,
       });
-      
       // Simular proceso de guardado
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      navigate('/historial');
+      navigate(`/historial/${id}`);
     } catch (error) {
       console.error('Error al guardar la intervención:', error);
     } finally {
@@ -130,8 +123,7 @@ const InterventionForm = () => {
                   <label htmlFor="responsible" className="block text-sm font-medium text-gray-700 mb-2">
                     Responsable <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
+                  <select
                     id="responsible"
                     value={formData.responsible}
                     onChange={(e) => handleInputChange('responsible', e.target.value)}
@@ -139,7 +131,14 @@ const InterventionForm = () => {
                     className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
                       errors.responsible ? 'border-red-300 bg-red-50' : 'border-gray-300'
                     }`}
-                  />
+                  >
+                    <option value="">Seleccione el responsable</option>
+                    {mechanics.map(mechanic => (
+                      <option key={mechanic.ID} value={mechanic.ID}>
+                        {mechanic.nombre}
+                      </option>
+                    ))}
+                  </select>
                   {errors.responsible && (
                     <div className="mt-2 flex items-center text-red-600 text-sm">
                       <AlertCircle className="h-4 w-4 mr-1" />

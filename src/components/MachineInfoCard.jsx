@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInterventions } from './../context/InterventionContext';
-import FetchMaquinas from './../services/api/maquinas';
+import { FetchMaquinas } from './../services/api/maquinas';
 import { Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const MachineInfoCard = () => {

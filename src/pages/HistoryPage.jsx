@@ -6,17 +6,27 @@ import MachineInfoCard from '../components/MachineInfoCard';
 import InterventionTable from '../components/InterventionTable';
 import QrScanner from '../components/utils/QrScanner';
 import { useParams } from 'react-router-dom';
-
+import { ObtenerIntervenciones } from '../services/api/intervenciones';
 const HistoryPage = () => {
   const { id } = useParams();
-  const { searchTerm, setSearchTerm, filteredInterventions } = useInterventions();
   const [showScanner, setShowScanner] = useState(false);
   const [scannedCode, setScannedCode] = useState(null);
+  const [intervenciones, setIntervenciones] = useState(null);
   const { QrScannerComponent, show } = QrScanner();
   const handleScan = (result) => {
     setScannedCode(result);
   };
-
+  const data = async () => {
+    const data = await ObtenerIntervenciones(id)
+    setIntervenciones(data)
+    return ;
+  };
+  useEffect(() => {
+    if(!id) {
+      return;
+    }
+    data();
+  }, [id])
   useEffect(() => {
     if(!show) {
       setShowScanner(null);
@@ -59,20 +69,6 @@ const HistoryPage = () => {
                 </button>
               )}
             </div>
-
-            {/* Search Bar */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="Buscar por tipo de mantenimiento, responsable, observaciones o fecha..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              />
-            </div>
           </div>
         </div>
 
@@ -90,25 +86,32 @@ const HistoryPage = () => {
                 </h3>
               </div>
               <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                {filteredInterventions.length} registros
+                {intervenciones?.length} registros
               </span>
             </div>
           </div>
 
           {/* Intervention Table */}
-          <InterventionTable interventions={filteredInterventions} />
+          <InterventionTable interventions={intervenciones} />
         </div>
 
         {/* Quick Actions */}
-        <div className="text-center">
-          <Link
-            to={`/nueva-intervencion/${id}`}
-            className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
-          >
-            <Calendar className="h-5 w-5 mr-2" />
-            Nueva Intervención
-          </Link>
-        </div>
+        {id ? (
+          <div className="text-center">
+            <Link
+              to={`/nueva-intervencion/${id}`}
+              className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Calendar className="h-5 w-5 mr-2" />
+              Nueva Intervención
+            </Link>
+          </div>
+        ) : (
+          <div className="text-center bg-gray-500 inline-flex items-center px-6 py-3 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+              <Calendar className="h-5 w-5 mr-2" />
+              Nueva Intervención
+          </div>
+        )}
       </div>
     </div>
   );

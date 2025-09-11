@@ -21,9 +21,9 @@ const ConfigurationPage = () => {
   
   const [machineForm, setMachineForm] = useState({
     serial: '',
-    type: '',
-    brand: '',
-    code: '',
+    maquina: '',
+    marca: '',
+    codigo: '',
     location: ''
   });
 
@@ -47,7 +47,7 @@ const ConfigurationPage = () => {
     } else {
       addMachine(machineForm);
     }
-    setMachineForm({ serial: '', type: '', brand: '', code: '', location: '' });
+    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '', location: '' }); 
     setShowMachineForm(false);
   };
 
@@ -59,7 +59,13 @@ const ConfigurationPage = () => {
 
   const startEditMachine = (machine) => {
     setEditingMachine(machine);
-    setMachineForm(machine);
+    setMachineForm({
+      serial: machine.serial,
+      maquina: machine.maquina,
+      marca: machine.marca,
+      codigo: machine.codigo,
+      location: machine.location
+    });
     setShowMachineForm(true);
   };
 
@@ -69,7 +75,7 @@ const ConfigurationPage = () => {
     setEditingMechanic(null);
     setEditingMachine(null);
     setMechanicForm({ name: '', email: '', phone: '', specialty: '' });
-    setMachineForm({ serial: '', type: '', brand: '', code: '', location: '' });
+    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '', location: '' });
   };
 
   return (
@@ -144,9 +150,7 @@ const ConfigurationPage = () => {
                 {mechanics.map((mechanic) => (
                   <div key={mechanic.id} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{mechanic.name}</h3>
-                      <p className="text-sm text-gray-600">{mechanic.email} • {mechanic.phone}</p>
-                      <p className="text-sm text-purple-600 font-medium">{mechanic.specialty}</p>
+                      <h3 className="font-semibold text-gray-900">{mechanic.nombre}</h3>
                     </div>
                     <div className="flex space-x-2">
                       <button
@@ -188,13 +192,12 @@ const ConfigurationPage = () => {
               </div>
 
               {/* Machines List */}
-              <div className="space-y-4">
+              <div className="space-y-4 scrollList overflow-y-auto">
                 {machines.map((machine) => (
                   <div key={machine.id} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{machine.code} - {machine.type}</h3>
-                      <p className="text-sm text-gray-600">Serial: {machine.serial} • Marca: {machine.brand}</p>
-                      <p className="text-sm text-purple-600 font-medium">Ubicación: {machine.location}</p>
+                      <h3 className="font-semibold text-gray-900">{machine.codigo} - {machine.maquina}</h3>
+                      <p className="text-sm text-gray-600">Serial: {machine.serial} • Marca: {machine.marca}</p>
                     </div>
                     <div className="flex space-x-2">
                       <button
@@ -246,32 +249,8 @@ const ConfigurationPage = () => {
                     <input
                       type="text"
                       required
-                      value={mechanicForm.name}
+                      value={mechanicForm.nombre}
                       onChange={(e) => setMechanicForm({...mechanicForm, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={mechanicForm.email}
-                      onChange={(e) => setMechanicForm({...mechanicForm, email: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Teléfono
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={mechanicForm.phone}
-                      onChange={(e) => setMechanicForm({...mechanicForm, phone: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
@@ -339,8 +318,8 @@ const ConfigurationPage = () => {
                     <input
                       type="text"
                       required
-                      value={machineForm.code}
-                      onChange={(e) => setMachineForm({...machineForm, code: e.target.value})}
+                      value={machineForm.codigo}
+                      onChange={(e) => setMachineForm({...machineForm, codigo: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
@@ -363,8 +342,8 @@ const ConfigurationPage = () => {
                     <input
                       type="text"
                       required
-                      value={machineForm.type}
-                      onChange={(e) => setMachineForm({...machineForm, type: e.target.value})}
+                      value={machineForm.maquina}
+                      onChange={(e) => setMachineForm({...machineForm, maquina: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
@@ -375,23 +354,12 @@ const ConfigurationPage = () => {
                     <input
                       type="text"
                       required
-                      value={machineForm.brand}
-                      onChange={(e) => setMachineForm({...machineForm, brand: e.target.value})}
+                      value={machineForm.marca}
+                      onChange={(e) => setMachineForm({...machineForm, marca: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ubicación
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={machineForm.location}
-                      onChange={(e) => setMachineForm({...machineForm, location: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    />
-                  </div>
+                  
                   <div className="flex justify-end space-x-3 pt-4">
                     <button
                       type="button"

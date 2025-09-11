@@ -1,7 +1,8 @@
 import React from 'react';
 import { Calendar, User, FileText, Wrench } from 'lucide-react';
 
-const InterventionTable = ({ interventions }) => {
+const InterventionTable = ({ interventions = [] }) => {
+  console.log(interventions)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
@@ -11,17 +12,26 @@ const InterventionTable = ({ interventions }) => {
     });
   };
 
+  const MaintenanceType = {
+    1: 'Preventivo',
+    2: 'Correctivo',
+    3: 'Predictivo',
+    4: 'Emergencia'
+  }
+
   const getMaintenanceTypeColor = (type) => {
+    let tipo = MaintenanceType[type];
+    
     const colors = {
       'Preventivo': 'bg-blue-100 text-blue-800',
       'Correctivo': 'bg-red-100 text-red-800',
       'Predictivo': 'bg-yellow-100 text-yellow-800',
       'Emergencia': 'bg-orange-100 text-orange-800'
     };
-    return colors[type] || 'bg-gray-100 text-gray-800';
+    return colors[tipo] || 'bg-gray-100 text-gray-800';
   };
 
-  if (interventions.length === 0) {
+  if (interventions?.length === 0) {
     return (
       <div className="p-8 text-center">
         <div className="flex flex-col items-center">
@@ -63,30 +73,30 @@ const InterventionTable = ({ interventions }) => {
 
       {/* Table Body */}
       <div className="divide-y divide-gray-200">
-        {interventions.map((intervention, index) => (
+        {interventions?.map((intervention, index) => (
           <div 
-            key={intervention.id}
+            key={intervention?.ID}
             className={`px-6 py-4 hover:bg-gray-50 transition-colors duration-200 ${
               index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
             }`}
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
               <div className="font-medium text-gray-900">
-                {formatDate(intervention.date)}
+                {formatDate(intervention?.fecha || '-')}
               </div>
               <div>
                 <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
-                  getMaintenanceTypeColor(intervention.maintenanceType)
+                  getMaintenanceTypeColor(intervention?.tipo || '-')
                 }`}>
-                  {intervention.maintenanceType}
+                  {MaintenanceType[intervention?.tipo || '-'] || '-'}
                 </span>
               </div>
               <div className="text-gray-700 font-medium">
-                {intervention.responsible}
+                {intervention?.responsable || '-'}
               </div>
               <div className="text-gray-600">
                 <p className="line-clamp-2 leading-relaxed">
-                  {intervention.observations}
+                  {intervention?.observacion || '-'}
                 </p>
               </div>
             </div>

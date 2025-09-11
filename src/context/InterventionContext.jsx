@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
+import FetchEmpleados from '../services/api/empleados';
+import { FetchMaquinas, EliminarMaquina } from '../services/api/maquinas';
+import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
 const InterventionContext = createContext(undefined);
 
 
@@ -19,96 +21,41 @@ export const InterventionProvider = ({ children }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem('interventions');
-    const storedMechanics = localStorage.getItem('mechanics');
+    const storedMechanics = /* localStorage.getItem('mechanics') */ false;
     const storedMachines = localStorage.getItem('machines');
     
-    if (stored) {
-      setInterventions(JSON.parse(stored));
-    } else {
-      // Datos de ejemplo
-      const sampleInterventions = [
-        {
-          id: '1',
-          date: '2024-01-15',
-          maintenanceType: 'Preventivo',
-          responsible: 'Juan Pérez',
-          observations: 'Revisión general de componentes electrónicos',
-          machineData: defaultMachineData
-        },
-        {
-          id: '2',
-          date: '2024-01-10',
-          maintenanceType: 'Correctivo',
-          responsible: 'María González',
-          observations: 'Reparación del motor principal',
-          machineData: defaultMachineData
-        }
-      ];
-      setInterventions(sampleInterventions);
-      localStorage.setItem('interventions', JSON.stringify(sampleInterventions));
-    }
+    console.log(storedMachines)
 
     if (storedMechanics) {
       setMechanics(JSON.parse(storedMechanics));
     } else {
-      const sampleMechanics = [
-        {
-          id: '1',
-          name: 'Juan Pérez',
-          email: 'juan.perez@empresa.com',
-          phone: '+57 300 123 4567',
-          specialty: 'Mecánica General'
-        },
-        {
-          id: '2',
-          name: 'María González',
-          email: 'maria.gonzalez@empresa.com',
-          phone: '+57 301 234 5678',
-          specialty: 'Electrónica'
-        }
-      ];
-      setMechanics(sampleMechanics);
-      localStorage.setItem('mechanics', JSON.stringify(sampleMechanics));
+      FetchEmpleados().then(data => {
+        setMechanics(data);
+      });
+      localStorage.setItem('mechanics', JSON.stringify(mechanics));
     }
+    // CARGAR MAQUINAS
+      FetchMaquinas().then(data => {
+        setMachines(data);
+              console.log(data);
 
-    if (storedMachines) {
-      setMachines(JSON.parse(storedMachines));
-    } else {
-      const sampleMachines = [
-        {
-          id: '1',
-          serial: '4D0EF07293',
-          type: 'MÁQUINA PLANA ELECTRÓNICA',
-          brand: 'JUKI',
-          code: 'PLA-0001',
-          location: 'Planta Principal - Línea A'
-        },
-        {
-          id: '2',
-          serial: '8D0FM21157',
-          type: 'MÁQUINA PLANA ELECTRÓNICA',
-          brand: 'JUKI',
-          code: 'PLA-0005',
-          location: 'Planta Principal - Línea B'
-        }
-      ];
-      setMachines(sampleMachines);
-      localStorage.setItem('machines', JSON.stringify(sampleMachines));
-    }
+      });
   }, []);
-
+// FUNCION PARA ALMACENAR INTERVENCIONES
   const addIntervention = (intervention) => {
-    const newIntervention = {
-      ...intervention,
-      id: Date.now().toString(),
-      machineData: defaultMachineData
-    };
-    
-    const updated = [...interventions, newIntervention];
-    setInterventions(updated);
-    localStorage.setItem('interventions', JSON.stringify(updated));
+    AlmacenarIntervencion(intervention).then(data => {
+      console.log(data);
+    })
+    alert('Intervención almacenada correctamente');
   };
+/////////////////////////////////////////////
+// FUNCION PARA OBTENER INTERVENCIONES
 
+  const getInterventions = async (codigo) => {
+    const data = await ObtenerIntervenciones(codigo);
+    return data;
+  }
+//////////////////////////////////////
   const addMechanic = (mechanic) => {
     const newMechanic = {
       ...mechanic,
@@ -151,18 +98,16 @@ export const InterventionProvider = ({ children }) => {
     localStorage.setItem('machines', JSON.stringify(updated));
   };
 
-  const deleteMachine = (id) => {
-    const updated = machines.filter(machine => machine.id !== id);
-    setMachines(updated);
-    localStorage.setItem('machines', JSON.stringify(updated));
+  const deleteMachine = async (id) => {
+    try {
+      await EliminarMaquina(id);
+      alert('Maquina eliminada correctamente');
+      await FetchMaquinas();
+      setMachines(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const filteredInterventions = interventions.filter(intervention =>
-    intervention.maintenanceType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    intervention.responsible.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    intervention.observations.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    intervention.date.includes(searchTerm)
-  );
 
   return (
     <InterventionContext.Provider value={{
@@ -170,7 +115,6 @@ export const InterventionProvider = ({ children }) => {
       addIntervention,
       searchTerm,
       setSearchTerm,
-      filteredInterventions,
       defaultMachineData,
       mechanics,
       machines,
@@ -179,10 +123,11 @@ export const InterventionProvider = ({ children }) => {
       deleteMechanic,
       addMachine,
       updateMachine,
-      deleteMachine
+      deleteMachine,
       setDefaultMachineData,
       maquina,
-      setMaquina
+      setMaquina,
+      getInterventions
     }}>
       {children}
     </InterventionContext.Provider>
