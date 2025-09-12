@@ -12,7 +12,7 @@ export default defineConfig({
     host: true,
      proxy: {
       '/api': {
-        target: 'https://192.168.1.15', // Redirige a la base de tu backend
+        target: 'https://mantenimiento.altconfecciones.local', // Redirige a la base de tu backend
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),

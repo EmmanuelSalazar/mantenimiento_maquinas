@@ -43,12 +43,18 @@ const ConfigurationPage = () => {
   const handleMachineSubmit = (e) => {
     e.preventDefault();
     if (editingMachine) {
-      updateMachine(editingMachine.id, machineForm);
+      machineForm.id = editingMachine.id
+      machineForm.maquina = machineForm.maquina.toUpperCase();
+      machineForm.marca = machineForm.marca.toUpperCase();
+      machineForm.codigo = machineForm.codigo.toUpperCase();
+      machineForm.serial = machineForm.serial.toUpperCase();
+
+      updateMachine(machineForm);
       setEditingMachine(null);
     } else {
       addMachine(machineForm);
     }
-    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '', location: '' }); 
+    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '' }); 
     setShowMachineForm(false);
   };
 
@@ -76,7 +82,7 @@ const ConfigurationPage = () => {
     setEditingMechanic(null);
     setEditingMachine(null);
     setMechanicForm({ name: '', email: '', phone: '', specialty: '' });
-    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '', location: '' });
+    setMachineForm({ serial: '', maquina: '', marca: '', codigo: '' });
   };
 
   // Obtener tipos únicos de máquinas para el filtro
@@ -157,7 +163,7 @@ const ConfigurationPage = () => {
               {/* Mechanics List */}
               <div className="space-y-4">
                 {mechanics.map((mechanic) => (
-                  <div key={mechanic.id} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+                  <div key={mechanic.ID} className="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900">{mechanic.nombre}</h3>
                     </div>

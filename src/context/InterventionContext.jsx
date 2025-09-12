@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import FetchEmpleados from '../services/api/empleados';
-import { FetchMaquinas, EliminarMaquina, AgregarMaquina } from '../services/api/maquinas';
+import { FetchMaquinas, EliminarMaquina, AgregarMaquina, ModificarMaquina } from '../services/api/maquinas';
 import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
 const InterventionContext = createContext(undefined);
 
@@ -20,12 +20,7 @@ export const InterventionProvider = ({ children }) => {
   const [machines, setMachines] = useState([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem('interventions');
     const storedMechanics = /* localStorage.getItem('mechanics') */ false;
-    const storedMachines = localStorage.getItem('machines');
-    
-    console.log(storedMachines)
-
     if (storedMechanics) {
       setMechanics(JSON.parse(storedMechanics));
     } else {
@@ -37,8 +32,6 @@ export const InterventionProvider = ({ children }) => {
     // CARGAR MAQUINAS
       FetchMaquinas().then(data => {
         setMachines(data);
-              console.log(data);
-
       });
   }, []);
 // FUNCION PARA ALMACENAR INTERVENCIONES
@@ -56,6 +49,7 @@ export const InterventionProvider = ({ children }) => {
     return data;
   }
 //////////////////////////////////////
+// GESTION PARA MECANICOS
   const addMechanic = (mechanic) => {
     const newMechanic = {
       ...mechanic,
@@ -67,11 +61,12 @@ export const InterventionProvider = ({ children }) => {
   };
 
   const updateMechanic = (id, updatedMechanic) => {
-    const updated = mechanics.map(mechanic => 
+    console.log(id, updatedMechanic);
+    /* const updated = mechanics.map(mechanic => 
       mechanic.id === id ? { ...updatedMechanic, id } : mechanic
     );
     setMechanics(updated);
-    localStorage.setItem('mechanics', JSON.stringify(updated));
+    localStorage.setItem('mechanics', JSON.stringify(updated)); */
   };
 
   const deleteMechanic = (id) => {
@@ -79,11 +74,12 @@ export const InterventionProvider = ({ children }) => {
     setMechanics(updated);
     localStorage.setItem('mechanics', JSON.stringify(updated));
   };
-
+//  GESTION DE LAS MAQUINAS
   const addMachine = async (machine) => {
     machine.maquina = machine.maquina.toUpperCase();
     machine.marca = machine.marca.toUpperCase();
     machine.codigo = machine.codigo.toUpperCase();
+    machine.serial = machine.serial.toUpperCase();
     try {
       await AgregarMaquina(machine);
       alert('Maquina añadida correctamente');
@@ -94,12 +90,15 @@ export const InterventionProvider = ({ children }) => {
     }
   };
 
-  const updateMachine = (id, updatedMachine) => {
-    const updated = machines.map(machine => 
-      machine.id === id ? { ...updatedMachine, id } : machine
-    );
-    setMachines(updated);
-    localStorage.setItem('machines', JSON.stringify(updated));
+  const updateMachine = async (updatedMachine) => {
+      try {
+        await ModificarMaquina(updatedMachine);
+        alert('Maquina modificada correctamente');
+        const data = await FetchMaquinas();
+        setMachines(data);
+      } catch (error) {
+        console.log(error);
+      }
   };
 
   const deleteMachine = async (id) => {

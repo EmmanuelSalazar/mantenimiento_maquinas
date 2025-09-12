@@ -4,7 +4,6 @@ import { useInterventions } from '../context/InterventionContext';
 function divisor(numero) {
     return numero % 6 === 0
 }
-console.log(divisor(5))
 function QrGenerator() {
   const { defaultMachineData } = useInterventions();
   const data = [

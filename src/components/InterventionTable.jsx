@@ -2,7 +2,6 @@ import React from 'react';
 import { Calendar, User, FileText, Wrench } from 'lucide-react';
 
 const InterventionTable = ({ interventions = [] }) => {
-  console.log(interventions)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
