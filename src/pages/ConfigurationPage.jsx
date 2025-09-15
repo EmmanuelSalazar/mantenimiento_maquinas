@@ -15,9 +15,6 @@ const ConfigurationPage = () => {
   
   const [mechanicForm, setMechanicForm] = useState({
     name: '',
-    email: '',
-    phone: '',
-    specialty: ''
   });
   
   const [machineForm, setMachineForm] = useState({
@@ -25,18 +22,17 @@ const ConfigurationPage = () => {
     maquina: '',
     marca: '',
     codigo: '',
-    location: ''
   });
 
   const handleMechanicSubmit = (e) => {
     e.preventDefault();
     if (editingMechanic) {
-      updateMechanic(editingMechanic.id, mechanicForm);
+      updateMechanic(mechanicForm);
       setEditingMechanic(null);
     } else {
       addMechanic(mechanicForm);
     }
-    setMechanicForm({ name: '', email: '', phone: '', specialty: '' });
+    setMechanicForm({ name: '' });
     setShowMechanicForm(false);
   };
 
@@ -81,7 +77,7 @@ const ConfigurationPage = () => {
     setShowMachineForm(false);
     setEditingMechanic(null);
     setEditingMachine(null);
-    setMechanicForm({ name: '', email: '', phone: '', specialty: '' });
+    setMechanicForm({ name: '' });
     setMachineForm({ serial: '', maquina: '', marca: '', codigo: '' });
   };
 
@@ -175,7 +171,7 @@ const ConfigurationPage = () => {
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => deleteMechanic(mechanic.id)}
+                        onClick={() => deleteMechanic(mechanic.ID)}
                         className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -305,28 +301,10 @@ const ConfigurationPage = () => {
                     <input
                       type="text"
                       required
-                      value={mechanicForm.nombre}
-                      onChange={(e) => setMechanicForm({...mechanicForm, name: e.target.value})}
+                      defaultValue={mechanicForm.nombre}
+                      onChange={(e) => setMechanicForm({...mechanicForm, nombre: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Especialidad
-                    </label>
-                    <select
-                      required
-                      value={mechanicForm.specialty}
-                      onChange={(e) => setMechanicForm({...mechanicForm, specialty: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    >
-                      <option value="">Seleccionar especialidad</option>
-                      <option value="Mecánica General">Mecánica General</option>
-                      <option value="Electrónica">Electrónica</option>
-                      <option value="Hidráulica">Hidráulica</option>
-                      <option value="Neumática">Neumática</option>
-                      <option value="Soldadura">Soldadura</option>
-                    </select>
                   </div>
                   <div className="flex justify-end space-x-3 pt-4">
                     <button

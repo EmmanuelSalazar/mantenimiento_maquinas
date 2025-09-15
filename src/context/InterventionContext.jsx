@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import FetchEmpleados from '../services/api/empleados';
+import { FetchEmpleados, AgregarEmpleado, ActualizarEmpleado, EliminarEmpleado } from '../services/api/empleados';
 import { FetchMaquinas, EliminarMaquina, AgregarMaquina, ModificarMaquina } from '../services/api/maquinas';
 import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
 const InterventionContext = createContext(undefined);
@@ -50,29 +50,40 @@ export const InterventionProvider = ({ children }) => {
   }
 //////////////////////////////////////
 // GESTION PARA MECANICOS
-  const addMechanic = (mechanic) => {
-    const newMechanic = {
-      ...mechanic,
-      id: Date.now().toString()
-    };
-    const updated = [...mechanics, newMechanic];
-    setMechanics(updated);
-    localStorage.setItem('mechanics', JSON.stringify(updated));
+  const addMechanic = async (mechanic) => {
+    mechanic.nombre = mechanic.name;
+    try {
+      console.log(mechanic);
+      await AgregarEmpleado(mechanic)
+      alert(`El empleado ${mechanic.nombre} ha sido añadido correctamente`);
+      const data = await FetchEmpleados();
+      setMechanics(data);
+    } catch (error) {
+      console.log(error);
+    }
+    
   };
 
-  const updateMechanic = (id, updatedMechanic) => {
-    console.log(id, updatedMechanic);
-    /* const updated = mechanics.map(mechanic => 
-      mechanic.id === id ? { ...updatedMechanic, id } : mechanic
-    );
-    setMechanics(updated);
-    localStorage.setItem('mechanics', JSON.stringify(updated)); */
+  const updateMechanic = async (mechanicInfo) => {
+    try {
+      await ActualizarEmpleado(mechanicInfo);
+      alert('Empleado actualizado correctamente');
+      const data = await FetchEmpleados();
+      setMechanics(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const deleteMechanic = (id) => {
-    const updated = mechanics.filter(mechanic => mechanic.id !== id);
-    setMechanics(updated);
-    localStorage.setItem('mechanics', JSON.stringify(updated));
+  const deleteMechanic = async (id) => {
+    try {
+      await EliminarEmpleado(id);
+      alert('Empleado eliminado correctamente');
+      const data = await FetchEmpleados();
+      setMechanics(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 //  GESTION DE LAS MAQUINAS
   const addMachine = async (machine) => {

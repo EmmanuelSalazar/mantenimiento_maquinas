@@ -5,10 +5,11 @@ import { useInterventions } from '../context/InterventionContext';
 import MachineInfoCard from '../components/MachineInfoCard';
 import InterventionTable from '../components/InterventionTable';
 import QrScanner from '../components/utils/QrScanner';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ObtenerIntervenciones } from '../services/api/intervenciones';
 const HistoryPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [showScanner, setShowScanner] = useState(false);
   const [scannedCode, setScannedCode] = useState(null);
   const [intervenciones, setIntervenciones] = useState(null);
