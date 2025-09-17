@@ -9,6 +9,7 @@ const GroupsPage = () => {
   const [showGroupForm, setShowGroupForm] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [expandedGroups, setExpandedGroups] = useState(new Set());
   
   const [groupForm, setGroupForm] = useState({
     name: '',
@@ -57,6 +58,15 @@ const GroupsPage = () => {
     }
   };
 
+  const toggleGroupExpansion = (groupId) => {
+    const newExpandedGroups = new Set(expandedGroups);
+    if (newExpandedGroups.has(groupId)) {
+      newExpandedGroups.delete(groupId);
+    } else {
+      newExpandedGroups.add(groupId);
+    }
+    setExpandedGroups(newExpandedGroups);
+  };
   const filteredMachines = machines.filter(machine =>
     machine.codigo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     machine.maquina.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,6 +124,12 @@ const GroupsPage = () => {
                     </div>
                     <div className="flex space-x-2">
                       <button
+                        onClick={() => toggleGroupExpansion(group.id)}
+                        className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      >
+                        {expandedGroups.has(group.id) ? 'Ocultar Máquinas' : 'Ver Máquinas'}
+                      </button>
+                      <button
                         onClick={() => startEditGroup(group)}
                         className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200"
                       >
@@ -129,7 +145,7 @@ const GroupsPage = () => {
                   </div>
                   
                   {/* Machines in Group */}
-                  {group.machines && group.machines.length > 0 && (
+                  {expandedGroups.has(group.id) && group.machines && group.machines.length > 0 && (
                     <div className="border-t border-gray-200 pt-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-3">Máquinas del grupo:</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -141,6 +157,15 @@ const GroupsPage = () => {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+                  
+                  {/* Show message when expanded but no machines */}
+                  {expandedGroups.has(group.id) && (!group.machines || group.machines.length === 0) && (
+                    <div className="border-t border-gray-200 pt-4">
+                      <p className="text-sm text-gray-500 text-center py-4">
+                        Este grupo no tiene máquinas asignadas
+                      </p>
                     </div>
                   )}
                 </div>
