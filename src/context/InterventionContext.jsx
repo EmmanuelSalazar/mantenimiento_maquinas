@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { FetchEmpleados, AgregarEmpleado, ActualizarEmpleado, EliminarEmpleado } from '../services/api/empleados';
 import { FetchMaquinas, EliminarMaquina, AgregarMaquina, ModificarMaquina } from '../services/api/maquinas';
 import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
+import { ObtenerGrupos } from '../services/api/grupos';
+
 const InterventionContext = createContext(undefined);
 
 
@@ -34,12 +36,11 @@ export const InterventionProvider = ({ children }) => {
       FetchMaquinas().then(data => {
         setMachines(data);
       });
-    
-    // CARGAR GRUPOS
-    const storedGroups = localStorage.getItem('groups');
-    if (storedGroups) {
-      setGroups(JSON.parse(storedGroups));
-    }
+      // CARGAR GRUPOS
+      ObtenerGrupos().then(data => {
+        setGroups(data);
+        console.log(data);
+      });
   }, []);
 // FUNCION PARA ALMACENAR INTERVENCIONES
   const addIntervention = (intervention) => {
@@ -132,7 +133,15 @@ export const InterventionProvider = ({ children }) => {
 
   // GESTION DE GRUPOS
   const addGroup = (group) => {
-    const newGroup = {
+    const grupo = group.selectedMachines.map((item) => {
+      return {
+        id: item.id,
+      }
+    })
+    group.selectedMachines = grupo;
+        console.log(group);
+
+    /* const newGroup = {
       id: Date.now(),
       name: group.name,
       machines: group.selectedMachines,
@@ -141,7 +150,7 @@ export const InterventionProvider = ({ children }) => {
     const updatedGroups = [...groups, newGroup];
     setGroups(updatedGroups);
     localStorage.setItem('groups', JSON.stringify(updatedGroups));
-    alert('Grupo creado correctamente');
+    alert('Grupo creado correctamente'); */
   };
 
   const updateGroup = (updatedGroup) => {

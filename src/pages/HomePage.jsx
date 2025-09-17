@@ -51,7 +51,7 @@ const HomePage = () => {
                   <Wrench className="h-8 w-8 text-orange-600" />
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                  Grupos de Máquinas
+                  Grupos de Referencias
                 </h2>
                 <p className="text-gray-600 leading-relaxed">
                   Organice las máquinas en grupos personalizados para facilitar la gestión y el mantenimiento.
