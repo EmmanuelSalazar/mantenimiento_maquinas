@@ -18,6 +18,7 @@ export const InterventionProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [mechanics, setMechanics] = useState([]);
   const [machines, setMachines] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   useEffect(() => {
     const storedMechanics = /* localStorage.getItem('mechanics') */ false;
@@ -33,6 +34,12 @@ export const InterventionProvider = ({ children }) => {
       FetchMaquinas().then(data => {
         setMachines(data);
       });
+    
+    // CARGAR GRUPOS
+    const storedGroups = localStorage.getItem('groups');
+    if (storedGroups) {
+      setGroups(JSON.parse(storedGroups));
+    }
   }, []);
 // FUNCION PARA ALMACENAR INTERVENCIONES
   const addIntervention = (intervention) => {
@@ -123,6 +130,40 @@ export const InterventionProvider = ({ children }) => {
     }
   };
 
+  // GESTION DE GRUPOS
+  const addGroup = (group) => {
+    const newGroup = {
+      id: Date.now(),
+      name: group.name,
+      machines: group.selectedMachines,
+      createdAt: new Date().toISOString()
+    };
+    const updatedGroups = [...groups, newGroup];
+    setGroups(updatedGroups);
+    localStorage.setItem('groups', JSON.stringify(updatedGroups));
+    alert('Grupo creado correctamente');
+  };
+
+  const updateGroup = (updatedGroup) => {
+    const updatedGroups = groups.map(group => 
+      group.id === updatedGroup.id 
+        ? { ...group, name: updatedGroup.name, machines: updatedGroup.selectedMachines }
+        : group
+    );
+    setGroups(updatedGroups);
+    localStorage.setItem('groups', JSON.stringify(updatedGroups));
+    alert('Grupo actualizado correctamente');
+  };
+
+  const deleteGroup = (id) => {
+    if (window.confirm('¿Está seguro de que desea eliminar este grupo?')) {
+      const updatedGroups = groups.filter(group => group.id !== id);
+      setGroups(updatedGroups);
+      localStorage.setItem('groups', JSON.stringify(updatedGroups));
+      alert('Grupo eliminado correctamente');
+    }
+  };
+
   return (
     <InterventionContext.Provider value={{
       interventions,
@@ -132,12 +173,16 @@ export const InterventionProvider = ({ children }) => {
       defaultMachineData,
       mechanics,
       machines,
+      groups,
       addMechanic,
       updateMechanic,
       deleteMechanic,
       addMachine,
       updateMachine,
       deleteMachine,
+      addGroup,
+      updateGroup,
+      deleteGroup,
       setDefaultMachineData,
       maquina,
       setMaquina,

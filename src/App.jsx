@@ -6,6 +6,7 @@ import InterventionForm from './pages/InterventionForm';
 import { InterventionProvider } from './context/InterventionContext';
 import ConfigurationPage from './pages/ConfigurationPage';
 import QrGenerator from './pages/QrGenerator';
+import GroupsPage from './pages/GroupsPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/configuracion" element={<ConfigurationPage />} />
             <Route path="/nueva-intervencion/:id" element={<InterventionForm />} />
             <Route path="/qr-generator" element={<QrGenerator />} />
+            <Route path="/grupos" element={<GroupsPage />} />
           </Routes>
         </div>
       </Router>

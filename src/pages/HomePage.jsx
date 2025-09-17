@@ -86,6 +86,25 @@ const HomePage = () => {
               Sistema de gestión profesional para control de mantenimiento industrial
             </p>
           </div>
+
+          {/* Grupos de Máquinas */}
+          <Link
+            to="/grupos"
+            className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+          >
+            <div className="p-8">
+              <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-6 group-hover:bg-orange-200 transition-colors duration-300">
+                <Wrench className="h-8 w-8 text-orange-600" />
+              </div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                Grupos de Máquinas
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                Organice las máquinas en grupos personalizados para facilitar la gestión y el mantenimiento.
+              </p>
+            </div>
+            <div className="h-1 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+          </Link>
         </div>
       </div>
     </div>
