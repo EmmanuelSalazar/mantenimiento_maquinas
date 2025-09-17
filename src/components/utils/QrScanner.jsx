@@ -6,7 +6,6 @@ const QrScanner = () => {
     const [show, setShow] = useState()
     const { setMaquina } = useInterventions();
     const result = (result) => {
-        console.log(result);
 /*         alert('Código escaneado: ' + result[0]?.rawValue);
  */        setShow(false)
         setMaquina(result[0]?.rawValue);

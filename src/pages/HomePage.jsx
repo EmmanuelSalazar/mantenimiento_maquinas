@@ -42,7 +42,7 @@ const HomePage = () => {
             </Link>
 
             {/* Ingresar Intervención */}
-            <Link
+            {/* <Link
               to="/nueva-intervencion"
               className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
             >
@@ -58,7 +58,7 @@ const HomePage = () => {
                 </p>
               </div>
               <div className="h-1 bg-gradient-to-r from-green-500 to-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-            </Link>
+            </Link> */}
 
             {/* Configuración */}
             <Link
