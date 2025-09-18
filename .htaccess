@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /alt-maintenance/
+
+  # Regla para el enrutamiento de la API:
+  # Redirige la URL sin extensión a su equivalente con extensión .php,
+  # por ejemplo, /maquinas -> /maquinas.php
+  # Esta regla debe ir antes de la regla del frontend.
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.+)$ $1.php [L]
+
+  # Regla para el frontend (SPA)
+  # Si el archivo solicitado no es un archivo físico y no es un directorio,
+  # reescribe la URL para servir el archivo index.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
