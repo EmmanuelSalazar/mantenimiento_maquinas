@@ -72,7 +72,6 @@ const GroupsPage = () => {
     machine.maquina.toLowerCase().includes(searchTerm.toLowerCase()) ||
     machine.marca.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-6">
@@ -114,20 +113,20 @@ const GroupsPage = () => {
             {/* Groups List */}
             <div className="space-y-4">
               {groups.map((group) => (
-                <div key={group.id} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <div key={group.grupo_id} className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{group.name}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{group.nombre}</h3>
                       <p className="text-sm text-gray-600">
-                        {group.machines?.length || 0} máquinas en este grupo
+                        {group.maquinas?.length || 0} máquinas en este grupo
                       </p>
                     </div>
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => toggleGroupExpansion(group.id)}
+                        onClick={() => toggleGroupExpansion(group.grupo_id)}
                         className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
                       >
-                        {expandedGroups.has(group.id) ? 'Ocultar Máquinas' : 'Ver Máquinas'}
+                        {expandedGroups.has(group.grupo_id) ? 'Ocultar Máquinas' : 'Ver Máquinas'}
                       </button>
                       <button
                         onClick={() => startEditGroup(group)}
@@ -136,7 +135,7 @@ const GroupsPage = () => {
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => deleteGroup(group.id)}
+                        onClick={() => deleteGroup(group.grupo_id)}
                         className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -145,12 +144,13 @@ const GroupsPage = () => {
                   </div>
                   
                   {/* Machines in Group */}
-                  {expandedGroups.has(group.id) && group.machines && group.machines.length > 0 && (
+                  {expandedGroups.has(group.grupo_id) && group.maquinas && group.maquinas.length > 0 && (
+    
                     <div className="border-t border-gray-200 pt-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-3">Máquinas del grupo:</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {group.machines.map((machine) => (
-                          <div key={machine.id} className="bg-white rounded-lg p-3 border border-gray-200">
+                        {group.maquinas.map((machine, index) => (
+                          <div key={index} className="bg-white rounded-lg p-3 border border-gray-200">
                             <div className="text-sm font-medium text-gray-900">{machine.codigo}</div>
                             <div className="text-xs text-gray-600">{machine.maquina}</div>
                             <div className="text-xs text-gray-500">{machine.marca}</div>

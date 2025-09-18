@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { FetchEmpleados, AgregarEmpleado, ActualizarEmpleado, EliminarEmpleado } from '../services/api/empleados';
 import { FetchMaquinas, EliminarMaquina, AgregarMaquina, ModificarMaquina } from '../services/api/maquinas';
 import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
-import { ObtenerGrupos } from '../services/api/grupos';
+import { ObtenerGrupos, AlmacenarGrupo } from '../services/api/grupos';
 
 const InterventionContext = createContext(undefined);
 
@@ -21,27 +21,40 @@ export const InterventionProvider = ({ children }) => {
   const [mechanics, setMechanics] = useState([]);
   const [machines, setMachines] = useState([]);
   const [groups, setGroups] = useState([]);
-
+// ESTE EFECTO DESCARGA TODOS LOS RECURSOS NECESARIOS PARA EL FUNCIONAMIENTO DEL SISTEMA
   useEffect(() => {
-    const storedMechanics = /* localStorage.getItem('mechanics') */ false;
-    if (storedMechanics) {
-      setMechanics(JSON.parse(storedMechanics));
-    } else {
-      FetchEmpleados().then(data => {
-        setMechanics(data);
-      });
-      localStorage.setItem('mechanics', JSON.stringify(mechanics));
+    const recursos = async () => {
+      try {
+        // CARGAR EMPLEADOS
+        const dataEmpleados = await FetchEmpleados();
+        setMechanics(dataEmpleados);
+        // CARGAR MAQUINAS
+        const dataMaquinas = await FetchMaquinas();
+        setMachines(dataMaquinas);
+        // CARGAR GRUPOS Y PARSEAR MAQUINAS
+        const data = await ObtenerGrupos();
+          const updatedGroups = data.map((grupo) => {
+          // Para cada grupo, creamos un nuevo arreglo de máquinas.
+            const updatedMaquinas = grupo.maquinas.map((maquina) => {
+            // Buscamos la máquina correspondiente en el arreglo 'machines'.
+              const foundMachine = dataMaquinas.find(m => m.id === String(maquina.id));
+          // Devolvemos el objeto completo si se encuentra, o un objeto vacío si no.
+            return foundMachine || {}; 
+            });
+          // Retornamos un nuevo objeto grupo con el arreglo de máquinas actualizado.
+          return {
+              ...grupo,
+              maquinas: updatedMaquinas
+          };
+        });
+        setGroups(updatedGroups);
+      } catch (error)  {
+        alert('Error: ', error || 'Ha ocurrido un error al descargar los recursos')
+      }
     }
-    // CARGAR MAQUINAS
-      FetchMaquinas().then(data => {
-        setMachines(data);
-      });
-      // CARGAR GRUPOS
-      ObtenerGrupos().then(data => {
-        setGroups(data);
-        console.log(data);
-      });
-  }, []);
+  recursos();
+},[]);
+
 // FUNCION PARA ALMACENAR INTERVENCIONES
   const addIntervention = (intervention) => {
     AlmacenarIntervencion(intervention).then(data => {
@@ -132,25 +145,21 @@ export const InterventionProvider = ({ children }) => {
   };
 
   // GESTION DE GRUPOS
-  const addGroup = (group) => {
-    const grupo = group.selectedMachines.map((item) => {
+  const addGroup = async (group) => {
+    group.selectedMachines = group.selectedMachines.map((item) => {
       return {
         id: item.id,
       }
     })
-    group.selectedMachines = grupo;
-        console.log(group);
-
-    /* const newGroup = {
-      id: Date.now(),
-      name: group.name,
-      machines: group.selectedMachines,
-      createdAt: new Date().toISOString()
-    };
-    const updatedGroups = [...groups, newGroup];
-    setGroups(updatedGroups);
-    localStorage.setItem('groups', JSON.stringify(updatedGroups));
-    alert('Grupo creado correctamente'); */
+    try {
+          console.log(group);
+      await AlmacenarGrupo(group);
+      alert('Grupo almacenado correctamente');
+      const data = await ObtenerGrupos();
+      setGroups(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const updateGroup = (updatedGroup) => {
