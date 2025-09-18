@@ -11,7 +11,22 @@ export const ObtenerGrupos = async (id = '') => {
 };
 export const AlmacenarGrupo = async (data) => {
     const query = await axios.post(`${apiUrl}/grupos.php`, data);
-    console.log(query);
+    if (query.data.ok) {
+        return query.data.respuesta;
+    } else {
+        throw new Error(query.data.respuesta || 'Ha ocurrido un error al realizar la solicitud');
+    }
+}
+export const ActualizarGrupo = async (data) => {
+    const query = await axios.put(`${apiUrl}/grupos.php`, data);
+    if (query.data.ok) {
+        return query.data.respuesta;
+    } else {
+        throw new Error(query.data.respuesta || 'Ha ocurrido un error al realizar la solicitud');
+    }
+}
+export const EliminarGrupo = async (id) => {
+    const query = await axios.delete(`${apiUrl}/grupos.php?id=${id}`);
     if (query.data.ok) {
         return query.data.respuesta;
     } else {

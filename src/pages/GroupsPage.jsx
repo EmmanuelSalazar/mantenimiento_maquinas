@@ -19,7 +19,7 @@ const GroupsPage = () => {
   const handleGroupSubmit = (e) => {
     e.preventDefault();
     if (editingGroup) {
-      updateGroup({ ...groupForm, id: editingGroup.id });
+      updateGroup({ ...groupForm, id: editingGroup.grupo_id });
       setEditingGroup(null);
     } else {
       addGroup(groupForm);
