@@ -30,9 +30,14 @@ const GroupsPage = () => {
 
   const startEditGroup = (group) => {
     setEditingGroup(group);
+    // Convertir los IDs de máquinas del grupo a objetos completos de máquina
+    const selectedMachines = group.maquinas ? group.maquinas.map(groupMachine => {
+      return machines.find(machine => machine.id === parseInt(groupMachine.id)) || machines.find(machine => machine.id === groupMachine.id);
+    }).filter(Boolean) : [];
+    
     setGroupForm({
-      name: group.name,
-      selectedMachines: group.machines || []
+      name: group.nombre,
+      selectedMachines: selectedMachines
     });
     setShowGroupForm(true);
   };
