@@ -12,7 +12,7 @@ function QrGenerator() {
       "serial": "8D0FM21157",
       "maquina": "MAQUINA PLANA ELECTRONICA",
       "marca": "JUKI",
-      "codigo": "PLA-0005",
+      "codigo": "ENV-0001",
       "reg_date": "2025-09-02 16:22:21"
     },
     {
@@ -20,7 +20,7 @@ function QrGenerator() {
       "serial": "26399358",
       "maquina": "MAQUINA PLANA ELECTRONICA",
       "marca": "SIRUBA",
-      "codigo": "PLA-0011",
+      "codigo": "DOSAG-0005",
       "reg_date": "2025-09-02 16:22:21"
     },
     {
@@ -36,7 +36,7 @@ function QrGenerator() {
       "serial": "504M2-04-3",
       "maquina": "FILETEADORA",
       "marca": "SIRUBA",
-      "codigo": "FLI-0009",
+      "codigo": "CAMCI-00001",
       "reg_date": "2025-09-02 16:22:21"
     },
     {
@@ -44,7 +44,7 @@ function QrGenerator() {
       "serial": "3035379HA",
       "maquina": "FILETEADORA",
       "marca": "SIRUBA",
-      "codigo": "FLI-0012",
+      "codigo": "CAMCI-00002",
       "reg_date": "2025-09-02 16:22:21"
     },
     {
@@ -52,7 +52,7 @@ function QrGenerator() {
       "serial": "CZ6003E04DF-B3",
       "maquina": "FILETEADORA CON CEROMAS",
       "marca": "YAMATO",
-      "codigo": "FLI-0018",
+      "codigo": "PLACC-0003",
       "reg_date": "2025-09-03 16:46:32"
     },
     {
@@ -60,7 +60,7 @@ function QrGenerator() {
       "serial": "W222-364",
       "maquina": "RECUBRIDORA",
       "marca": "SIRUBA",
-      "codigo": "REC-0006",
+      "codigo": "PLA-0017",
       "reg_date": "2025-09-02 16:22:21"
     },
     {
@@ -68,7 +68,7 @@ function QrGenerator() {
       "serial": "2L2PK00067",
       "maquina": "ZIGZADORA",
       "marca": "JUKI SMART",
-      "codigo": "ZIG-0004",
+      "codigo": "DOSAG-0006",
       "reg_date": "2025-09-02 16:22:22"
     },
     {
@@ -76,7 +76,7 @@ function QrGenerator() {
       "serial": "B3Z40718",
       "maquina": "ZIGZADORA",
       "marca": "BROTHER ELECTRONICA",
-      "codigo": "ZIG-0010",
+      "codigo": "DOSAG-0007",
       "reg_date": "2025-09-02 16:22:22"
     },
     {
@@ -84,7 +84,7 @@ function QrGenerator() {
       "serial": "10017941",
       "maquina": "RESORTADORA",
       "marca": "SIRUBA",
-      "codigo": "RES-0004",
+      "codigo": "DOSAG-0008",
       "reg_date": "2025-09-02 16:22:22"
     },
     {
@@ -92,7 +92,7 @@ function QrGenerator() {
       "serial": "W522-364",
       "maquina": "RESORTADORA",
       "marca": "SIRUBA",
-      "codigo": "RES-0007",
+      "codigo": "DOSAG-0009",
       "reg_date": "2025-09-02 16:22:22"
     },
     {
@@ -100,7 +100,7 @@ function QrGenerator() {
       "serial": "15416279",
       "maquina": "DOS AGUJAS",
       "marca": "SIRUBA",
-      "codigo": "DOSAG-0002",
+      "codigo": "PLACC-0005",
       "reg_date": "2025-09-05 12:48:42"
     },
     {
@@ -108,7 +108,7 @@ function QrGenerator() {
       "serial": "128600137",
       "maquina": "DOS AGUJAS",
       "marca": "SIRUBA",
-      "codigo": "DOSAG-0003",
+      "codigo": "PRE-0006",
       "reg_date": "2025-09-05 12:48:46"
     },
     {
@@ -116,7 +116,7 @@ function QrGenerator() {
       "serial": "15416272",
       "maquina": "DOS AGUJAS",
       "marca": "SIRUBA",
-      "codigo": "DOSAG-0004",
+      "codigo": "CAMCI-0003",
       "reg_date": "2025-09-05 12:48:48"
     },
     {
@@ -124,7 +124,7 @@ function QrGenerator() {
       "serial": "128600179",
       "maquina": "DOS AGUJAS",
       "marca": "SIRUBA",
-      "codigo": "DOSAG-0001",
+      "codigo": "ENV-0004",
       "reg_date": "2025-09-05 12:48:32"
     },
     {
@@ -132,7 +132,7 @@ function QrGenerator() {
       "serial": "C10004812",
       "maquina": "CAMA CILINDRICA",
       "marca": "SIRUBA",
-      "codigo": "AMCI-0002",
+      "codigo": "RES-0008",
       "reg_date": "2025-09-05 12:50:29"
     },
     {
@@ -140,7 +140,7 @@ function QrGenerator() {
       "serial": "VC2640P",
       "maquina": "CAMA CILINDRICA",
       "marca": "LLAMATO",
-      "codigo": "AMCI-0001",
+      "codigo": "FLI-0022",
       "reg_date": "2025-09-05 12:50:24"
     },
     {
@@ -148,7 +148,7 @@ function QrGenerator() {
       "serial": "220124045",
       "maquina": "PLANA COSER Y CORTAR ELECTRONICA",
       "marca": "METRO SPEZIAL",
-      "codigo": "PLACC-0002",
+      "codigo": "FLI-0021",
       "reg_date": "2025-09-03 16:42:35"
     },
     {
@@ -156,7 +156,45 @@ function QrGenerator() {
       "serial": "1027042",
       "maquina": "FILETEADORA",
       "marca": "PEGASUS",
-      "codigo": "FLI-0019",
+      "codigo": "PLACC-0001",
+      "reg_date": "2025-09-03 16:45:30"
+    },
+    {
+      "id": 86,
+      "serial": "1027042",
+      "maquina": "FILETEADORA",
+      "marca": "PEGASUS",
+      "codigo": "RES-0009",
+      "reg_date": "2025-09-03 16:45:30"
+    },
+    {
+      "id": 86,
+      "serial": "1027042",
+      "maquina": "FILETEADORA",
+      "marca": "PEGASUS",
+      "codigo": "PLACC-0006",
+      "reg_date": "2025-09-03 16:45:30"
+    },
+    {
+      "id": 86,
+      "serial": "1027042",
+      "maquina": "FILETEADORA",
+      "marca": "PEGASUS",
+      "codigo": "ZIG-0015",
+      "reg_date": "2025-09-03 16:45:30"
+    },{
+      "id": 86,
+      "serial": "1027042",
+      "maquina": "FILETEADORA",
+      "marca": "PEGASUS",
+      "codigo": "RES-0004",
+      "reg_date": "2025-09-03 16:45:30"
+    },{
+      "id": 86,
+      "serial": "1027042",
+      "maquina": "FILETEADORA",
+      "marca": "PEGASUS",
+      "codigo": "FLI-0004",
       "reg_date": "2025-09-03 16:45:30"
     }
   ]
