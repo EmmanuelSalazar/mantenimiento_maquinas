@@ -77,6 +77,30 @@
             ];
         }
         echo json_encode($respuesta);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = $data['ID'];
+        $maintenanceType = $data['tipo'];
+        $responsible = $data['responsable'];
+        $observations = $data['observacion'];
+        $sql = 'UPDATE intervenciones SET tipo = ?, observacion = ?, emp_id = ? WHERE ID = ?';
+        if($stmt = $mysqli->prepare($sql)) {
+            $stmt->bind_param('sssi', $maintenanceType, $observations, $responsible, $id);
+            if($stmt->execute()) {
+                $respuesta = [
+                    "ok" => true,
+                    "respuesta" => "Intervención actualizada"
+                ];
+            } else {
+                $respuesta = [
+                    "respuesta" => "Error al actualizar la intervención"
+                ];
+            }
+        } else {
+            $respuesta = [
+                "respuesta" => "Error al actualizar la intervención"
+            ];
+        }
+        echo json_encode($respuesta);
     }
-
 ?>
