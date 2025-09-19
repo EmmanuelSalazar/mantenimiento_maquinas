@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Settings, Users, Wrench, Plus, Edit, Trash2, Save, X, Filter } from 'lucide-react';
+import { ArrowLeft, Settings, Users, Wrench, Plus, Edit, Trash2, Save, X, Filter, QrCode } from 'lucide-react';
 import { useInterventions } from '../context/InterventionContext';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const ConfigurationPage = () => {
   const { mechanics, machines, addMechanic, updateMechanic, deleteMechanic, addMachine, updateMachine, deleteMachine } = useInterventions();
@@ -12,6 +13,8 @@ const ConfigurationPage = () => {
   const [showMachineForm, setShowMachineForm] = useState(false);
   const [editingMechanic, setEditingMechanic] = useState(null);
   const [editingMachine, setEditingMachine] = useState(null);
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [selectedMachineForQR, setSelectedMachineForQR] = useState(null);
   
   const [mechanicForm, setMechanicForm] = useState({
     name: '',
@@ -79,6 +82,16 @@ const ConfigurationPage = () => {
     setEditingMachine(null);
     setMechanicForm({ name: '' });
     setMachineForm({ serial: '', maquina: '', marca: '', codigo: '' });
+  };
+
+  const showQRCode = (machine) => {
+    setSelectedMachineForQR(machine);
+    setShowQRModal(true);
+  };
+
+  const closeQRModal = () => {
+    setShowQRModal(false);
+    setSelectedMachineForQR(null);
   };
 
   // Obtener tipos únicos de máquinas para el filtro
@@ -250,12 +263,21 @@ const ConfigurationPage = () => {
                       <button
                         onClick={() => startEditMachine(machine)}
                         className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                        title="Editar máquina"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
+                        onClick={() => showQRCode(machine)}
+                        className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors duration-200"
+                        title="Generar código QR"
+                      >
+                        <QrCode className="h-4 w-4" />
+                      </button>
+                      <button
                         onClick={() => deleteMachine(machine.id)}
                         className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
+                        title="Eliminar máquina"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -411,6 +433,69 @@ const ConfigurationPage = () => {
                     </button>
                   </div>
                 </form>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* QR Code Modal */}
+        {showQRModal && selectedMachineForQR && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Código QR - {selectedMachineForQR.codigo}
+                  </h3>
+                  <button
+                    onClick={closeQRModal}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+                
+                <div className="text-center">
+                  <div className="mb-4">
+                    <h4 className="text-md font-medium text-gray-700 mb-2">
+                      {selectedMachineForQR.maquina}
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      Serial: {selectedMachineForQR.serial} • Marca: {selectedMachineForQR.marca}
+                    </p>
+                  </div>
+                  
+                  <div className="flex justify-center mb-6">
+                    <div id="qr-canvas">
+                      <QRCodeCanvas
+                        value={selectedMachineForQR.codigo}
+                        size={200}
+                        level="M"
+                        includeMargin={true}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="text-sm text-gray-500 mb-4">
+                    Código: <strong>{selectedMachineForQR.codigo}</strong>
+                  </div>
+                  
+                  <button
+                    onClick={() => {
+                      // Crear un canvas temporal para descargar la imagen
+                      const canvas = document.querySelector('#qr-canvas canvas');
+                      if (canvas) {
+                        const link = document.createElement('a');
+                        link.download = `QR_${selectedMachineForQR.codigo}.png`;
+                        link.href = canvas.toDataURL();
+                        link.click();
+                      }
+                    }}
+                    className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200"
+                  >
+                    Descargar QR
+                  </button>
+                </div>
               </div>
             </div>
           </div>

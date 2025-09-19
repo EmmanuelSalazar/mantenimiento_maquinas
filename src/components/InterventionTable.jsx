@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, User, FileText, Wrench } from 'lucide-react';
+import { Calendar, User, FileText, Wrench, Edit } from 'lucide-react';
 
 const InterventionTable = ({ interventions = [] }) => {
   const formatDate = (dateString) => {
@@ -30,6 +30,13 @@ const InterventionTable = ({ interventions = [] }) => {
     return colors[tipo] || 'bg-gray-100 text-gray-800';
   };
 
+  const handleEditIntervention = (intervention) => {
+    // Esta función será llamada cuando se haga clic en editar
+    console.log('Editar intervención:', intervention);
+    // Aquí puedes añadir la lógica para abrir un modal de edición
+    // o navegar a una página de edición
+  };
+
   if (interventions?.length === 0) {
     return (
       <div className="p-8 text-center">
@@ -50,7 +57,7 @@ const InterventionTable = ({ interventions = [] }) => {
     <div className="overflow-hidden">
       {/* Table Header */}
       <div className="bg-gray-50 px-6 py-3 border-b">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-medium text-gray-500 uppercase tracking-wide">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs font-medium text-gray-500 uppercase tracking-wide">
           <div className="flex items-center">
             <Calendar className="h-4 w-4 mr-2" />
             Fecha
@@ -67,6 +74,10 @@ const InterventionTable = ({ interventions = [] }) => {
             <FileText className="h-4 w-4 mr-2" />
             Observación
           </div>
+          <div className="flex items-center">
+            <Edit className="h-4 w-4 mr-2" />
+            Acciones
+          </div>
         </div>
       </div>
 
@@ -79,7 +90,7 @@ const InterventionTable = ({ interventions = [] }) => {
               index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
             }`}
           >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
               <div className="font-medium text-gray-900">
                 {formatDate(intervention?.fecha || '-')}
               </div>
@@ -97,6 +108,15 @@ const InterventionTable = ({ interventions = [] }) => {
                 <p className="line-clamp-2 leading-relaxed">
                   {intervention?.observacion || '-'}
                 </p>
+              </div>
+              <div>
+                <button
+                  onClick={() => handleEditIntervention(intervention)}
+                  className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                  title="Editar intervención"
+                >
+                  <Edit className="h-4 w-4" />
+                </button>
               </div>
             </div>
           </div>
