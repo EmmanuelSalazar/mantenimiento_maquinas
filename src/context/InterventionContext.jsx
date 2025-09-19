@@ -198,6 +198,7 @@ const parseGroups = (data, maquinas) => {
     <InterventionContext.Provider value={{
       interventions,
       addIntervention,
+      updateIntervention,
       searchTerm,
       setSearchTerm,
       defaultMachineData,
