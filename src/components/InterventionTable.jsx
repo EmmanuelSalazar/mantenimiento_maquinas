@@ -98,11 +98,10 @@ const InterventionTable = ({ interventions = [], onInterventionUpdated }) => {
         responsable: formData.responsible,
         observacion: formData.observations
       };
-      
-      // Aquí llamarías a la función para actualizar la intervención
-      // await updateIntervention(updatedIntervention);
-      console.log('Intervención actualizada:', updatedIntervention);
-      
+      await updateIntervention(updatedIntervention)
+
+/*       console.log('Intervención actualizada:', updatedIntervention);
+ */      
       // Simular proceso de guardado
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -113,7 +112,6 @@ const InterventionTable = ({ interventions = [], onInterventionUpdated }) => {
         onInterventionUpdated(updatedIntervention);
       }
       
-      alert('Intervención actualizada correctamente');
     } catch (error) {
       console.error('Error al actualizar la intervención:', error);
       alert('Error al actualizar la intervención');
@@ -292,7 +290,7 @@ const InterventionTable = ({ interventions = [], onInterventionUpdated }) => {
                   >
                     <option value="">Seleccione el responsable</option>
                     {mechanics.map(mechanic => (
-                      <option key={mechanic.ID} value={mechanic.nombre}>
+                      <option key={mechanic.ID} value={mechanic.ID}>
                         {mechanic.nombre}
                       </option>
                     ))}

@@ -26,3 +26,16 @@ export const ObtenerIntervenciones = async (values) => {
     throw error
   }
 }
+export const ActualizarIntervencion = async (values) => {
+  try {
+    const response = await axios.put(`${apiUrl}/intervenciones.php`, values)
+    console.log(response);
+    if (!response.data.ok) {
+      throw new Error("Ha ocurrido un error al actualizar la intervención, si el error persiste, contacta al administrador")
+    }
+    return response.data
+  } catch (error) {
+    console.error("Error al actualizar la intervención", error)
+    throw error
+  }
+}

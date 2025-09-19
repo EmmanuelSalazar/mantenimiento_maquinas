@@ -466,12 +466,14 @@ const ConfigurationPage = () => {
                   </div>
                   
                   <div className="flex justify-center mb-6">
-                    <div id="qr-canvas">
+                    <div id="qr-canvas" style={{textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+                                <h1 className='text-4xl font-bold' >{selectedMachineForQR.codigo}</h1>
+
                       <QRCodeCanvas
                         value={selectedMachineForQR.codigo}
                         size={200}
                         level="M"
-                        includeMargin={true}
+                        imageSettings={{ src: 'https://altconfecciones.com.co/assets/logo-Cax7HYwl.png',  width: 30, height: 30}}
                       />
                     </div>
                   </div>

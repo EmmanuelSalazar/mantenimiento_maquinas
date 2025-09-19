@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { FetchEmpleados, AgregarEmpleado, ActualizarEmpleado, EliminarEmpleado } from '../services/api/empleados';
 import { FetchMaquinas, EliminarMaquina, AgregarMaquina, ModificarMaquina } from '../services/api/maquinas';
-import { ObtenerIntervenciones, AlmacenarIntervencion } from '../services/api/intervenciones';
+import { ObtenerIntervenciones, AlmacenarIntervencion, ActualizarIntervencion } from '../services/api/intervenciones';
 import { ObtenerGrupos, AlmacenarGrupo, ActualizarGrupo, EliminarGrupo } from '../services/api/grupos';
 const InterventionContext = createContext(undefined);
 export const InterventionProvider = ({ children }) => {
@@ -17,6 +17,7 @@ export const InterventionProvider = ({ children }) => {
   const [mechanics, setMechanics] = useState([]);
   const [machines, setMachines] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [actualizado, setActualizado] = useState(false);
 // FUNCION PARA PARSEAR MAQUINAS EN GRUPOS
 const parseGroups = (data, maquinas) => {
   return data.map((grupo) => {
@@ -63,18 +64,27 @@ const parseGroups = (data, maquinas) => {
     alert('Intervención almacenada correctamente');
   };
 /////////////////////////////////////////////
-// FUNCION PARA OBTENER INTERVENCIONES
+// GESTION DE INTERVENCIONES
 
   const getInterventions = async (codigo) => {
     const data = await ObtenerIntervenciones(codigo);
     return data;
+  }
+  const updateIntervention = async (intervention) => {
+    try {
+      await ActualizarIntervencion(intervention);
+      alert('Intervención actualizada correctamente');
+      setActualizado(true);
+    } catch (error) {
+      console.log(error);
+      alert('Error: ', error || 'Ha ocurrido un error al actualizar la intervención, si el error persiste, contacta al administrador');
+    }
   }
 //////////////////////////////////////
 // GESTION PARA MECANICOS
   const addMechanic = async (mechanic) => {
     mechanic.nombre = mechanic.name;
     try {
-      console.log(mechanic);
       await AgregarEmpleado(mechanic)
       alert(`El empleado ${mechanic.nombre} ha sido añadido correctamente`);
       const data = await FetchEmpleados();
@@ -217,7 +227,9 @@ const parseGroups = (data, maquinas) => {
       setDefaultMachineData,
       maquina,
       setMaquina,
-      getInterventions
+      getInterventions,
+      actualizado,
+      setActualizado
     }}>
       {children}
     </InterventionContext.Provider>

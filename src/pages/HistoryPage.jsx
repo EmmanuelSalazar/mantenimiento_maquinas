@@ -9,6 +9,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ObtenerIntervenciones } from '../services/api/intervenciones';
 const HistoryPage = () => {
   const { id } = useParams();
+  const { actualizado, setActualizado } = useInterventions();
   const navigate = useNavigate();
   const [showScanner, setShowScanner] = useState(false);
   const [scannedCode, setScannedCode] = useState(null);
@@ -22,6 +23,12 @@ const HistoryPage = () => {
     setIntervenciones(data)
     return ;
   };
+  useEffect(() => {
+    if(actualizado) {
+      data();
+      setActualizado(false);
+    }
+  }, [actualizado])
   useEffect(() => {
     if(!id) {
       return;
