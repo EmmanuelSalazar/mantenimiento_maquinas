@@ -94,6 +94,12 @@ const ConfigurationPage = () => {
     setSelectedMachineForQR(null);
   };
 
+  const handleDeleteMechanic = (id) => {
+    if (window.confirm('¿Está seguro de que desea eliminar este mecánico? Esta acción no se puede deshacer.')) {
+      deleteMechanic(id);
+    }
+  };
+
   // Obtener tipos únicos de máquinas para el filtro
   const uniqueMachineTypes = [...new Set(machines.map(machine => machine.maquina))].sort();
 
@@ -184,7 +190,7 @@ const ConfigurationPage = () => {
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => deleteMechanic(mechanic.ID)}
+                        onClick={() => handleDeleteMechanic(mechanic.ID)}
                         className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
                       >
                         <Trash2 className="h-4 w-4" />
